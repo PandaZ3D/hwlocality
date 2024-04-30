@@ -165,6 +165,7 @@ impl Topology {
         policy: MemoryBindingPolicy,
         mut flags: MemoryBindingFlags,
     ) -> Result<Bytes<'_>, MemoryAllocationError<Set::Owned>> {
+        println!("trying to allocate");
         Self::adjust_flags_for::<Set::Owned>(&mut flags);
         let Some(flags) = flags.validate(MemoryBoundObject::Area, MemoryBindingOperation::Allocate)
         else {
