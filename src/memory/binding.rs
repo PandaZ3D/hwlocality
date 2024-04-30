@@ -168,6 +168,7 @@ impl Topology {
         Self::adjust_flags_for::<Set::Owned>(&mut flags);
         let Some(flags) = flags.validate(MemoryBoundObject::Area, MemoryBindingOperation::Allocate)
         else {
+            println!("bad flags!!");
             return Err(MemoryBindingError::BadFlags(flags.into()));
         };
         // SAFETY: - Bitmap is trusted to contain a valid ptr (type invariant)
