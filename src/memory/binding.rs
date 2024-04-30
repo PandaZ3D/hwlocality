@@ -165,13 +165,13 @@ impl Topology {
         policy: MemoryBindingPolicy,
         mut flags: MemoryBindingFlags,
     ) -> Result<Bytes<'_>, MemoryAllocationError<Set::Owned>> {
-        println!("trying to allocate");
+        // println!("trying to allocate");
         Self::adjust_flags_for::<Set::Owned>(&mut flags);
-        // let Some(flags) = flags.validate(MemoryBoundObject::Area, MemoryBindingOperation::Allocate)
-        // else {
-            // println!("bad flags!!");
-            // return Err(MemoryBindingError::BadFlags(flags.into()));
-        // };
+        let Some(flags) = flags.validate(MemoryBoundObject::Area, MemoryBindingOperation::Allocate)
+        else {
+            println!("bad flags!!");
+            return Err(MemoryBindingError::BadFlags(flags.into()));
+        };
         // SAFETY: - Bitmap is trusted to contain a valid ptr (type invariant)
         //         - hwloc ops are trusted not to modify *const parameters
         //         - hwloc_alloc_membind with set, policy and flags
@@ -1209,6 +1209,8 @@ impl MemoryBindingFlags {
             MemoryBoundObject::ThisProgram => 0,
         };
         if num_target_flags != expected_num_target_flags {
+            // AA:
+            println!("num of flags is bad");
             return None;
         }
 
